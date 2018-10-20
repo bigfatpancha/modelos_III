@@ -1,0 +1,27 @@
+package com.example.demo.tp.model;
+
+public class Producto {
+	
+	private String id;
+	private String descripcion;
+	private int stock;
+	
+	public Producto(String id, String descripcion, int stock) {
+		this.id = id;
+		this.descripcion = descripcion;
+		this.stock = stock;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public int getStock() {
+		return stock;
+	}
+
+}
