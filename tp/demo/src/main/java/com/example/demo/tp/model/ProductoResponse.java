@@ -5,6 +5,7 @@ public class ProductoResponse {
 	private String descripcion;
 	private double cantidadAComprar;
 //	private double stockOptimo; 
+	private double costoTotal;
 	
 	public ProductoResponse(){}
 
@@ -22,6 +23,14 @@ public class ProductoResponse {
 
 	public void setCantidadAComprar(double cantidadAComprar) {
 		this.cantidadAComprar = cantidadAComprar;
+	}
+
+	public double getCostoTotal() {
+		return costoTotal;
+	}
+
+	public void setCostoTotal(double costoTotal) {
+		this.costoTotal = costoTotal;
 	}
 
 //	public double getStockOptimo() {

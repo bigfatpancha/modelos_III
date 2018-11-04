@@ -1,0 +1,10 @@
+package com.example.demo.tp.model;
+
+public class DescuentoPorCantidad {
+	
+	private int cantidad;
+	private double precioUnitario;
+	
+	public DescuentoPorCantidad() {}
+
+}

@@ -34,10 +34,15 @@ public class StockController {
 	private ListaDeProductosResponse getOptimizedStock(ListaDeProductos productos) {
 		ListaDeProductosResponse listaDeProductosResponse = new ListaDeProductosResponse();
 		List<ProductoResponse> lista = new ArrayList<>();
+		double costoTotal = 0;
 		for(Producto p: productos.getData()) {
 			ProductoResponse pr = new ProductoResponse();
 			try {
-				pr.setCantidadAComprar(Math.ceil(cantidadOptimaConsiderandoStockActual(p)));
+				double cantidadAComprar = Math.ceil(cantidadOptimaConsiderandoStockActual(p, productos.getTasaInmovilizacionCapital()));
+				double costoTotalPorProducto = cantidadAComprar * p.getCosto();
+				pr.setCantidadAComprar(cantidadAComprar);
+				pr.setCostoTotal(costoTotalPorProducto);
+				costoTotal += costoTotalPorProducto;
 			} catch(Exception e) {
 				throw e;
 			}
@@ -45,13 +50,15 @@ public class StockController {
 			lista.add(pr);
 		}
 		listaDeProductosResponse.setData(lista);
+		listaDeProductosResponse.setCostoTotal(costoTotal);
 		return listaDeProductosResponse;
 	}
 	
-	private double cantidadOptimaConsiderandoStockActual(Producto producto) {
+	private double cantidadOptimaConsiderandoStockActual(Producto producto, double tasaInmovilizacionCapital) {
 		double cantidadOptima = 0;
 		try {
-			cantidadOptima = calcularCantidadOptimaConAgotamiento(producto);
+//			cantidadOptima = calcularCantidadOptimaConAgotamiento(producto);
+			cantidadOptima = calcularCantidadOptimaMultiItem(producto, tasaInmovilizacionCapital);
 		} catch(Exception e) {
 			throw e;
 		}
@@ -103,6 +110,21 @@ public class StockController {
 			double segundoTermino = numeradorSegundoTermino/c2;
 			double raizSegundoTermino = Math.sqrt(segundoTermino);
 			return raizPrimerTermino * raizSegundoTermino;
+		} catch(Exception e) {
+			throw e;
+		}
+		
+	}
+	
+	private double calcularCantidadOptimaMultiItem(Producto producto, double tasaInmovilizacionCapital) {
+		double k = producto.getCostoDeOrden();
+		double d = producto.getDemandaEstimada();
+		double numerador = 2*k*d;
+		double b = producto.getCosto();
+		double denominador = tasaInmovilizacionCapital*b;
+		try {
+			double termino = numerador/denominador;
+			return Math.sqrt(termino);
 		} catch(Exception e) {
 			throw e;
 		}

@@ -17,7 +17,7 @@ public class Producto {
 	private double precioVenta;
 	private Integer stock;
 	private Integer demandaEstimada;
-		
+	
 	
 	public Producto() {}
 
