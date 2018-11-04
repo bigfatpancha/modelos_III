@@ -1,0 +1,68 @@
+package com.example.demo.tp.gestion.stock.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.example.demo.tp.model.ListaDeProductos;
+import com.example.demo.tp.model.ListaDeProductosResponse;
+import com.example.demo.tp.model.Producto;
+import com.example.demo.tp.model.ProductoResponse;
+
+@Controller
+@RequestMapping(path="/local/stock")
+public class StockController {
+	
+	@RequestMapping(value ="/optimizado", method = RequestMethod.POST)
+	public ResponseEntity<ListaDeProductosResponse> gestionStockPOptimizadoPost(
+			@RequestBody ListaDeProductos listaDeProductos) {
+		
+		return new ResponseEntity<>(getOptimizedStock(listaDeProductos), HttpStatus.OK);
+	}
+	
+	private ListaDeProductosResponse getOptimizedStock(ListaDeProductos productos) {
+		ListaDeProductosResponse listaDeProductosResponse = new ListaDeProductosResponse();
+		List<ProductoResponse> lista = new ArrayList<>();
+		for(Producto p: productos.getData()) {
+			ProductoResponse pr = new ProductoResponse();
+			pr.setCantidadAComprar(cantidadOptimaConsiderandoStockActual(p)); //cantidadOptimaConsiderandoStockActual(p)
+			pr.setDescripcion(p.getDescripcion());
+			lista.add(pr);
+		}
+		listaDeProductosResponse.setData(lista);
+		return listaDeProductosResponse;
+	}
+	
+	private double cantidadOptimaConsiderandoStockActual(Producto producto) {
+		double cantidadOptima = calcularCantidadOptimaConAgotamiento(producto);
+		return (cantidadOptima - producto.getStock()) > 0 ? cantidadOptima - producto.getStock() : 0;
+	}
+	
+	private double calcularCantidadOptimaConAgotamiento(Producto producto) {
+		double b = producto.getCosto();
+		double c1_prima = producto.getCostoAlmacenamiento();
+		double c1 = b*c1_prima;
+		
+		double c2 = producto.getCostoAgotamiento();
+		
+		double k = producto.getCostoDeOrden();
+		Integer d = producto.getDemanda();
+		
+		double numeradorPrimerTermino = 2*k*d;
+		double primerTermino = numeradorPrimerTermino/c1;
+		double raizPrimerTermino = Math.sqrt(primerTermino);
+		
+		double numeradorSegundoTermino = c1 + c2;
+		double segundoTermino = numeradorSegundoTermino/c2;
+		double raizSegundoTermino = Math.sqrt(segundoTermino);
+		
+		return raizPrimerTermino * raizSegundoTermino;
+	}
+
+}

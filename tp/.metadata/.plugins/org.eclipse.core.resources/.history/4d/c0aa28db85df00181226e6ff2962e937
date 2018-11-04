@@ -1,0 +1,28 @@
+package com.example.demo.tp.model;
+
+public class ProductoResponse {
+	
+	private String descripcion;
+	private Integer cantidadAComprar;
+	
+	public ProductoResponse(){}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public Integer getCantidadAComprar() {
+		return cantidadAComprar;
+	}
+
+	public void setCantidadAComprar(Integer cantidadAComprar) {
+		this.cantidadAComprar = cantidadAComprar;
+	}
+	
+	
+
+}

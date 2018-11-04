@@ -11,7 +11,13 @@ public class Producto {
 	private String id;
 	private String descripcion;
 	private double costo;
+	private double costoAlmacenamiento;
+	private double costoAgotamiento;
+	private double costoDeOrden;
 	private double precioVenta;
+	private Integer stock;
+	private Integer demandaEstimada;
+		
 	
 	public Producto() {}
 
@@ -45,6 +51,46 @@ public class Producto {
 
 	public void setPrecioVenta(double precioVenta) {
 		this.precioVenta = precioVenta;
+	}
+
+	public Integer getStock() {
+		return stock;
+	}
+
+	public void setStock(Integer stock) {
+		this.stock = stock;
+	}
+
+	public Integer getDemandaEstimada() {
+		return demandaEstimada;
+	}
+
+	public void setDemandaEstimada(Integer demandaEstimada) {
+		this.demandaEstimada = demandaEstimada;
+	}
+
+	public double getCostoAlmacenamiento() {
+		return costoAlmacenamiento;
+	}
+
+	public void setCostoAlmacenamiento(double costoAlmacenamiento) {
+		this.costoAlmacenamiento = costoAlmacenamiento;
+	}
+
+	public double getCostoAgotamiento() {
+		return costoAgotamiento;
+	}
+
+	public void setCostoAgotamiento(double costoAgotamiento) {
+		this.costoAgotamiento = costoAgotamiento;
+	}
+
+	public double getCostoDeOrden() {
+		return costoDeOrden;
+	}
+
+	public void setCostoDeOrden(double costoDeOrden) {
+		this.costoDeOrden = costoDeOrden;
 	}
 
 }

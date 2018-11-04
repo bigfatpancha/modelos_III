@@ -1,7 +1,0 @@
-package com.example.demo.tp.connectorjdbc;
-
-import org.springframework.data.repository.CrudRepository;
-
-public interface DescuentoRepository extends CrudRepository<T, ID> {
-
-}

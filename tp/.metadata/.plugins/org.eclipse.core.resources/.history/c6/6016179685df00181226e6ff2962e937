@@ -1,0 +1,56 @@
+package com.example.demo.tp.gestion.stock.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.example.demo.tp.model.ListaDeProductos;
+import com.example.demo.tp.model.ListaDeProductosResponse;
+import com.example.demo.tp.model.Producto;
+
+@Controller
+@RequestMapping(path="/local/stock")
+public class StockController {
+	
+	@RequestMapping(value ="/optimizado", method = RequestMethod.GET)
+	public ResponseEntity<?> gestionStockPOptimizadoPost(
+			@RequestBody ListaDeProductos listaDeProductos) {
+		
+		return ResponseEntity<>(getOptimizedStock(listaDeProductos), HttpStatus.OK);
+	}
+	
+	private ListaDeProductosResponse getOptimizedStock(ListaDeProductos productos) {
+		for(Producto p: productos.getData()) {
+			cantidadOptimaConsiderandoStockActual(p);
+		}
+	}
+	
+	private double cantidadOptimaConsiderandoStockActual(Producto producto) {
+		double cantidadOptima = calcularCantidadOptima(producto);
+		return (cantidadOptima - producto.getStock()) > 0 ? cantidadOptima - producto.getStock() : 0;
+	}
+	
+	private double calcularCantidadOptima(Producto producto) {
+		double b = producto.getCosto();
+		double c1_prima = producto.getCostoAlmacenamiento();
+		double c1 = b*c1_prima;
+		
+		double c2 = producto.getCostoAgotamiento();
+		
+		double k = producto.getCostoDeOrden();
+		Integer d = producto.getDemanda();
+		
+		double numeradorPrimerTermino = 2*k*d;
+		double primerTermino = numeradorPrimerTermino/c1;
+		double raizPrimerTermino = Math.sqrt(primerTermino);
+		
+		double numeradorSegundoTermino = c1 + c2;
+		double segundoTermino = numeradorSegundoTermino/c2;
+		double raizSegundoTermino = Math.sqrt(segundoTermino);
+		
+		return raizPrimerTermino * raizSegundoTermino;
+	}
+
+}

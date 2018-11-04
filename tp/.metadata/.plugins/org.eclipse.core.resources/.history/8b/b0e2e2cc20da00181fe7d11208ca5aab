@@ -1,0 +1,7 @@
+package com.example.demo.tp.connectorjdbc;
+
+import org.springframework.data.repository.CrudRepository;
+
+public interface VentaRepository extends CrudRepository<T, ID> {
+
+}
