@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { CalcularCantidadResponse } from './model/model'
@@ -91,7 +91,8 @@ export class HttpService {
 	  }
 
 	response: any = {}
-	
+	nuevoProducto = {}
+	@Output() agregarProducto: EventEmitter<boolean> = new EventEmitter();
 
 	constructor(private http: HttpClient) { }
 
@@ -99,6 +100,9 @@ export class HttpService {
 		return this.http.post<?>(this.url, this.datos, this.httpOptions);
 	}
 
-	
+	agregarNuevoProducto(nuevoProducto: any) {
+	    this.nuevoProducto = nuevoProducto;
+		this.agregarProducto.emit(this.nuevoProducto);
+	}
 
 }

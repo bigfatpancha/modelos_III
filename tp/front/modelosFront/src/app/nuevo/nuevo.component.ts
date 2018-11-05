@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpService } from '../http.service'
 
 @Component({
   selector: 'app-nuevo',
@@ -20,13 +21,14 @@ export class NuevoComponent implements OnInit {
 
 	}
 
-	constructor() { }
+	constructor(private _hs: HttpService) { }
 
 	ngOnInit() {
 	}
 
 	confirmar() {
 		console.log(this.nuevoProducto)
+		this._hs.agregarNuevoProducto(this.nuevoProducto)
 	}
 
 }
