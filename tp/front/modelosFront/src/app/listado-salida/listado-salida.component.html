@@ -1,0 +1,22 @@
+<div class="container">
+	<div class="table-responsive">
+		<table class="table table-striped table-sm">
+			<thead>
+				<tr>
+					<th>Descripcion</th>
+					<th>Cantidad a comprar</th>
+					<th>Costo total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let producto of response.data">
+					<td>{{producto.descripcion}}</td>
+					<td>{{producto.cantidadAComprar}}</td>
+					<td>{{producto.costoTotal}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div><br>
+	<p>COSTO TOTAL: {{response.costoTotal}}</p>
+	
+</div>

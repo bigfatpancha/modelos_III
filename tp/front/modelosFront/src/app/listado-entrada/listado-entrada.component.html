@@ -1,0 +1,48 @@
+<div class="container">
+	<div class="row">
+		<div class="col-5">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="inputTasaInmovilizacion">Tasa de inmovilizacion</span>
+				</div>
+				<input type="numeric" class="form-control" aria-label="Sizing example input" aria-describedby="inputTasaInmovilizacion" [(ngModel)]="datos.tasaInmovilizacionCapital" name="tasaInmovilizacionCapital">
+			</div>
+		</div>
+	</div>
+	<br>
+	<div class="table-responsive">
+		<table class="table table-striped table-sm">
+			<thead>
+				<tr>
+					<th>Descripcion</th>
+					<th>Costo</th>
+					<th>Costo almacenamiento</th>
+					<th>Costo Agotamiento</th>
+					<th>Costo de orden</th>
+					<th>Precio de venta</th>
+					<th>Stock actual</th>
+					<th>Demanda estimada</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let producto of datos.data">
+					<td><input type="text" class="form-control" [(ngModel)]="producto.descripcion" name="descripcion"></td>
+					<td><input type="text" class="form-control" [(ngModel)]="producto.costo" name="costo"></td>
+					<td><input type="text" class="form-control" [(ngModel)]="producto.costoAlmacenamiento" name="costoAlmacenamiento"></td>
+					<td><input type="text" class="form-control" [(ngModel)]="producto.costoAgotamiento" name="costoAgotamiento"></td>
+					<td><input type="text" class="form-control" [(ngModel)]="producto.costoDeOrden" name="costoDeOrden"></td>
+					<td><input type="text" class="form-control" [(ngModel)]="producto.precioVenta" name="precioVenta"></td>
+					<td><input type="text" class="form-control" [(ngModel)]="producto.stock" name="stock"></td>
+					<td><input type="text" class="form-control" [(ngModel)]="producto.demandaEstimada" name="demandaEstimada"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row">
+		<div class="col">
+			<button routerLink="/salida" type="button" class="btn btn-dark">consultar cantidad a comprar</button>
+			<button routerLink="/nuevo" type="button" class="btn btn-outline-dark">+ agregar</button>
+		</div>
+	</div>
+	
+</div>

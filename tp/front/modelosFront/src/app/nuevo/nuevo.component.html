@@ -1,0 +1,78 @@
+<div class="container">
+	<form>
+		<div class="row">
+			<div class="col-6">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="exampleFormControlInput1">Descripcion</span>
+					</div>
+					<input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="exampleFormControlInput1" [(ngModel)]="nuevoProducto.descripcion" name="descripcion">
+				</div>
+			</div>
+			<div class="col-5">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="exampleFormControlInput2">Costo</span>
+					</div>
+					<input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="exampleFormControlInput2" [(ngModel)]="nuevoProducto.costo" name="costo">
+				</div>
+			</div>
+		</div><br>
+		<div class="row">
+			<div class="col-6">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="exampleFormControlInput3">Costo almacenamiento</span>
+					</div>
+					<input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="exampleFormControlInput3" [(ngModel)]="nuevoProducto.costoAlmacenamiento" name="costoAlmacenamiento">
+				</div>
+			</div>
+			<div class="col-5">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="exampleFormControlInput4">Costo de agotamiento</span>
+					</div>
+					<input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="exampleFormControlInput4" [(ngModel)]="nuevoProducto.costoAgotamiento" name="costoAgotamiento">
+				</div>
+			</div>
+		</div><br>
+		<div class="row">
+			<div class="col-6">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="exampleFormControlInput5">Costo de orden</span>
+					</div>
+					<input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="exampleFormControlInput5" [(ngModel)]="nuevoProducto.costoDeOrden" name="costoDeOrden">
+				</div>
+			</div>
+			<div class="col-5">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="exampleFormControlInput6">Precio de Venta</span>
+					</div>
+					<input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="exampleFormControlInput6" [(ngModel)]="nuevoProducto.precioVenta" name="precioVenta">
+				</div>
+			</div>
+		</div><br>
+		<div class="row">
+			<div class="col-6">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="exampleFormControlInput7">Stock</span>
+					</div>
+					<input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="exampleFormControlInput7" [(ngModel)]="nuevoProducto.stock" name="stock">
+				</div>
+			</div>
+			<div class="col-5">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="exampleFormControlInput8">Demanda estimada</span>
+					</div>
+					<input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="exampleFormControlInput8" [(ngModel)]="nuevoProducto.demandaEstimada" name="demandaEstimada">
+				</div>
+			</div>
+		</div><br>
+		<button type="button" class="btn btn-dark" (click)="confirmar()">confirmar</button>
+	</form>
+
+</div>
