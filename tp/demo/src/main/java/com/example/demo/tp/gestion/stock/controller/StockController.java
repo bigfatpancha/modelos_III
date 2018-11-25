@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.example.demo.tp.model.ListaDeProductos;
 import com.example.demo.tp.model.ListaDeProductosResponse;
+import com.example.demo.tp.model.PriotityComparator;
 import com.example.demo.tp.model.Producto;
 import com.example.demo.tp.model.ProductoResponse;
 
@@ -33,104 +34,83 @@ public class StockController {
 		return new ResponseEntity<ListaDeProductosResponse>(lista, HttpStatus.OK);
 	}
 	
-	private ListaDeProductosResponse getOptimizedStock(ListaDeProductos productos) {
+	private ListaDeProductosResponse getOptimizedStock(ListaDeProductos productos) throws Exception {
 		ListaDeProductosResponse listaDeProductosResponse = new ListaDeProductosResponse();
+		productos.getData().sort(new PriotityComparator());
 		List<ProductoResponse> lista = new ArrayList<>();
+		double costoTotal;
+		costoTotal = obtenerStockOptimizadoDelListadoDeProductos(productos, lista);
+		listaDeProductosResponse.setData(lista);
+		listaDeProductosResponse.setCostoTotal(costoTotal);
+		return listaDeProductosResponse;
+	}
+
+	private double obtenerStockOptimizadoDelListadoDeProductos(ListaDeProductos productos, List<ProductoResponse> lista)
+			throws Exception {
+		boolean salir = false;
 		double costoTotal = 0;
 		for(Producto p: productos.getData()) {
 			ProductoResponse pr = new ProductoResponse();
 			try {
-				double cantidadAComprar = Math.ceil(cantidadOptimaConsiderandoStockActual(p, productos.getTasaInmovilizacionCapital()));
+				double cantidadAComprar = Math.ceil(cantidadOptimaConsiderandoStockActual(p));
 				double costoTotalPorProducto = cantidadAComprar * p.getCosto();
+				costoTotal += costoTotalPorProducto;
+				if(superaCostoMaximo(productos, costoTotal)) {
+					salir = true;
+					double excedente = costoTotal - productos.getCostoMaximoTotal();
+					cantidadAComprar = cantidadAComprar - (excedente/p.getCosto());
+					costoTotal -= costoTotalPorProducto;
+					costoTotalPorProducto = cantidadAComprar * p.getCosto();
+					costoTotal += costoTotalPorProducto;
+				}
 				pr.setCantidadAComprar(cantidadAComprar);
 				pr.setCostoTotal(costoTotalPorProducto);
-				costoTotal += costoTotalPorProducto;
 			} catch(Exception e) {
 				throw e;
 			}
 			pr.setDescripcion(p.getDescripcion());
 			lista.add(pr);
+			if(salir)
+				break;
 		}
-		listaDeProductosResponse.setData(lista);
-		listaDeProductosResponse.setCostoTotal(costoTotal);
-		return listaDeProductosResponse;
+		return costoTotal;
 	}
-	
-	private double cantidadOptimaConsiderandoStockActual(Producto producto, double tasaInmovilizacionCapital) {
+
+	private boolean superaCostoMaximo(ListaDeProductos productos, double costoTotal) {
+		return costoTotal > productos.getCostoMaximoTotal();
+	}
+
+	private double cantidadOptimaConsiderandoStockActual(Producto producto) {
 		double cantidadOptima = 0;
 		try {
-//			cantidadOptima = calcularCantidadOptimaConAgotamiento(producto);
-			cantidadOptima = calcularCantidadOptimaMultiItem(producto, tasaInmovilizacionCapital);
+			cantidadOptima = calcularStockOptimo(producto);
 		} catch(Exception e) {
 			throw e;
 		}
 		return (cantidadOptima - producto.getStock()) > 0 ? cantidadOptima - producto.getStock() : 0;
 	}
 	
-	private double stockOptimoATener(Producto producto) {
-		double stockOptimo = 0;
-		try {
-			stockOptimo = calcularStockOptimo(producto);
-		} catch(Exception e) {
-			throw e;
-		}
-		return stockOptimo;
-	}
-	
 	private double calcularStockOptimo(Producto producto) {
 		double b = producto.getCosto();
 		double c1_prima = producto.getCostoAlmacenamiento();
 		double c1 = b*c1_prima;
-		double c2 = producto.getCostoAgotamiento();
 		double k = producto.getCostoDeOrden();
 		double d = producto.getDemandaEstimada();
 		double numeradorPrimerTermino = 2*k*d;
-		double denominadorSegundoTermino = c1 + c2;
 		try {
 			double primerTermino = numeradorPrimerTermino/c1;
-			double raizPrimerTermino = Math.sqrt(primerTermino);
-			double segundoTermino = c2/denominadorSegundoTermino;
-			double raizSegundoTermino = Math.sqrt(segundoTermino);
-			return raizPrimerTermino * raizSegundoTermino;
+			return Math.sqrt(primerTermino);
 		} catch(Exception e) {
 			throw e;
 		}
 	}
 	
-	private double calcularCantidadOptimaConAgotamiento(Producto producto) {
-		double b = producto.getCosto();
-		double c1_prima = producto.getCostoAlmacenamiento();
-		double c1 = b*c1_prima;
-		double c2 = producto.getCostoAgotamiento();
-		double k = producto.getCostoDeOrden();
-		double d = producto.getDemandaEstimada();
-		double numeradorPrimerTermino = 2*k*d;
-		double numeradorSegundoTermino = c1 + c2;
-		try {
-			double primerTermino = numeradorPrimerTermino/c1;
-			double raizPrimerTermino = Math.sqrt(primerTermino);
-			double segundoTermino = numeradorSegundoTermino/c2;
-			double raizSegundoTermino = Math.sqrt(segundoTermino);
-			return raizPrimerTermino * raizSegundoTermino;
-		} catch(Exception e) {
-			throw e;
+	private void priorizarSegunMontoMaximo(double maximo, ArrayList<ProductoResponse> productosResponse, ArrayList<Producto> productos) {
+		for(Producto p : productos) {
+			// establecer prioridades
 		}
-		
-	}
-	
-	private double calcularCantidadOptimaMultiItem(Producto producto, double tasaInmovilizacionCapital) {
-		double k = producto.getCostoDeOrden();
-		double d = producto.getDemandaEstimada();
-		double numerador = 2*k*d;
-		double b = producto.getCosto();
-		double denominador = tasaInmovilizacionCapital*b;
-		try {
-			double termino = numerador/denominador;
-			return Math.sqrt(termino);
-		} catch(Exception e) {
-			throw e;
-		}
-		
+		// recalcular cantidades
+		// verificar costo total
 	}
 
 }

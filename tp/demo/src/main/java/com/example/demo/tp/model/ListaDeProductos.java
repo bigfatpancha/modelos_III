@@ -5,7 +5,7 @@ import java.util.List;
 public class ListaDeProductos {
 	
 	private List<Producto> data;
-	private double tasaInmovilizacionCapital;
+	private double costoMaximoTotal;
 	
 	public ListaDeProductos() {}
 
@@ -17,12 +17,12 @@ public class ListaDeProductos {
 		this.data = data;
 	}
 
-	public double getTasaInmovilizacionCapital() {
-		return tasaInmovilizacionCapital;
+	public double getCostoMaximoTotal() {
+		return costoMaximoTotal;
 	}
 
-	public void setTasaInmovilizacionCapital(double tasaInmovilizacionCapital) {
-		this.tasaInmovilizacionCapital = tasaInmovilizacionCapital;
+	public void setCostoMaximoTotal(double costoMaximoTotal) {
+		this.costoMaximoTotal = costoMaximoTotal;
 	}
 
 }

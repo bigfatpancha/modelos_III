@@ -1,15 +1,15 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { CalcularCantidadResponse } from './model/model'
-import { BehaviorSubject } from 'rxjs';
+import { CalcularCantidadResponse, Producto, ProductoRequest } from './model/model'
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
 
-	const httpOptions = {
+	httpOptions = {
 		headers: new HttpHeaders({ 
 			'content-type': 'application/json',
 			'accept': 'application/json',
@@ -18,89 +18,36 @@ export class HttpService {
 	};
 
 	private url = 'http://localhost:8080/local/stock/optimizado';
-	datos = {
-    "tasaInmovilizacionCapital": 0.01,
-    "data": [
-	      {
-	        "id": "1",
-	        "descripcion": "Remeras",
-	        "costo": 150,
-	        "costoAlmacenamiento": 0.01,
-	        "costoAgotamiento": 650,
-	        "costoDeOrden": 600,
-	        "precioVenta": 650,
-	        "stock": 0,
-	        "demandaEstimada": 200
-	      },
-	      {
-	        "id": "2",
-	        "descripcion": "Musculosas",
-	        "costo": 100,
-	        "costoAlmacenamiento": 0.01,
-	        "costoAgotamiento": 400,
-	        "costoDeOrden": 600,
-	        "precioVenta": 400,
-	        "stock": 0,
-	        "demandaEstimada": 120
-	      },
-	      {
-	        "id": "3",
-	        "descripcion": "Bermudas",
-	        "costo": 200,
-	        "costoAlmacenamiento": 0.01,
-	        "costoAgotamiento": 800,
-	        "costoDeOrden": 600,
-	        "precioVenta": 800,
-	        "stock": 0,
-	        "demandaEstimada": 150
-	      },
-	      {
-	        "id": "4",
-	        "descripcion": "Pantalones",
-	        "costo": 250,
-	        "costoAlmacenamiento": 0.015,
-	        "costoAgotamiento": 900,
-	        "costoDeOrden": 600,
-	        "precioVenta": 900,
-	        "stock": 0,
-	        "demandaEstimada": 100
-	      },
-	      {
-	        "id": "5",
-	        "descripcion": "Shorts",
-	        "costo": 100,
-	        "costoAlmacenamiento": 0.01,
-	        "costoAgotamiento": 400,
-	        "costoDeOrden": 600,
-	        "precioVenta": 400,
-	        "stock": 0,
-	        "demandaEstimada": 150
-	      },
-	      {
-	        "id": "6",
-	        "descripcion": "Mallas",
-	        "costo": 450,
-	        "costoAlmacenamiento": 0.01,
-	        "costoAgotamiento": 1500,
-	        "costoDeOrden": 600,
-	        "precioVenta": 1500,
-	        "stock": 0,
-	        "demandaEstimada": 0
-	      }
-	    ]
-	  }
+    request:ProductoRequest = new ProductoRequest();
+    
 
-	response: any = {}
-	nuevoProducto = {}
-	@Output() agregarProducto: EventEmitter<boolean> = new EventEmitter();
+	response:CalcularCantidadResponse = new CalcularCantidadResponse();
+	nuevoProducto: Producto;
+	@Output() agregarProducto: EventEmitter<Producto> = new EventEmitter();
 
-	constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient) {
+		let data:Array<Producto> = []
+		let p1: Producto = new Producto(1, "Remeras", 150, 0.01, 600, 650, 0, 200);
+		let p2: Producto = new Producto(2, "Musculosas", 100, 0.01, 600, 400, 0, 120)
+		let p3: Producto = new Producto(3, "Bermudas", 200, 0.01, 600, 800, 0, 150);
+		let p4: Producto = new Producto(4, "Pantalones", 250, 0.015, 600, 900, 0, 100);
+		let p5: Producto = new Producto(5, "Shorts", 100, 0.01, 600, 400, 0, 150);
+		let p6: Producto = new Producto(6, "Mallas", 450, 0.01, 600, 1500, 0, 0);
 
-	consultarCantidades(): Observable<CalcularCantidadResponse>{
-		return this.http.post<?>(this.url, this.datos, this.httpOptions);
+		data.push(p1);
+		data.push(p2);
+		data.push(p3);
+		data.push(p4);
+		data.push(p5);
+		data.push(p6);
+		this.request.data = data;
 	}
 
-	agregarNuevoProducto(nuevoProducto: any) {
+	consultarCantidades(): Observable<CalcularCantidadResponse>{
+		return this.http.post<CalcularCantidadResponse>(this.url, this.request, this.httpOptions);
+	}
+
+	agregarNuevoProducto(nuevoProducto: Producto) {
 	    this.nuevoProducto = nuevoProducto;
 		this.agregarProducto.emit(this.nuevoProducto);
 	}

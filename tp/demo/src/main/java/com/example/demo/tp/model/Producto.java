@@ -12,7 +12,6 @@ public class Producto {
 	private String descripcion;
 	private double costo;
 	private double costoAlmacenamiento;
-	private double costoAgotamiento;
 	private double costoDeOrden;
 	private double precioVenta;
 	private Integer stock;
@@ -75,14 +74,6 @@ public class Producto {
 
 	public void setCostoAlmacenamiento(double costoAlmacenamiento) {
 		this.costoAlmacenamiento = costoAlmacenamiento;
-	}
-
-	public double getCostoAgotamiento() {
-		return costoAgotamiento;
-	}
-
-	public void setCostoAgotamiento(double costoAgotamiento) {
-		this.costoAgotamiento = costoAgotamiento;
 	}
 
 	public double getCostoDeOrden() {
