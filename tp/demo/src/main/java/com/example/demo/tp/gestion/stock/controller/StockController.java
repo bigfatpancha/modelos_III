@@ -47,31 +47,35 @@ public class StockController {
 
 	private double obtenerStockOptimizadoDelListadoDeProductos(ListaDeProductos productos, List<ProductoResponse> lista)
 			throws Exception {
-		boolean salir = false;
+		boolean llegoAlMaximo = false;
 		double costoTotal = 0;
 		for(Producto p: productos.getData()) {
 			ProductoResponse pr = new ProductoResponse();
+			double cantidadAComprar = 0;
+			double costoTotalPorProducto = 0;
 			try {
-				double cantidadAComprar = Math.ceil(cantidadOptimaConsiderandoStockActual(p));
-				double costoTotalPorProducto = cantidadAComprar * p.getCosto();
-				costoTotal += costoTotalPorProducto;
-				if(superaCostoMaximo(productos, costoTotal)) {
-					salir = true;
-					double excedente = costoTotal - productos.getCostoMaximoTotal();
-					cantidadAComprar = cantidadAComprar - (excedente/p.getCosto());
-					costoTotal -= costoTotalPorProducto;
+				if(!llegoAlMaximo) {
+					cantidadAComprar = Math.ceil(cantidadOptimaConsiderandoStockActual(p));
 					costoTotalPorProducto = cantidadAComprar * p.getCosto();
 					costoTotal += costoTotalPorProducto;
+					if(superaCostoMaximo(productos, costoTotal)) {
+						llegoAlMaximo = true;
+						double excedente = costoTotal - productos.getCostoMaximoTotal();
+						cantidadAComprar = cantidadAComprar - (excedente/p.getCosto());
+						costoTotal -= costoTotalPorProducto;
+						costoTotalPorProducto = cantidadAComprar * p.getCosto();
+						costoTotal += costoTotalPorProducto;
+					}
+					
 				}
-				pr.setCantidadAComprar(cantidadAComprar);
-				pr.setCostoTotal(costoTotalPorProducto);
+				
 			} catch(Exception e) {
 				throw e;
 			}
 			pr.setDescripcion(p.getDescripcion());
+			pr.setCantidadAComprar(cantidadAComprar);
+			pr.setCostoTotal(costoTotalPorProducto);
 			lista.add(pr);
-			if(salir)
-				break;
 		}
 		return costoTotal;
 	}
@@ -104,13 +108,4 @@ public class StockController {
 			throw e;
 		}
 	}
-	
-	private void priorizarSegunMontoMaximo(double maximo, ArrayList<ProductoResponse> productosResponse, ArrayList<Producto> productos) {
-		for(Producto p : productos) {
-			// establecer prioridades
-		}
-		// recalcular cantidades
-		// verificar costo total
-	}
-
 }
