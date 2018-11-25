@@ -1,14 +1,14 @@
 <div class="container">
-	<!-- <div class="row">
+	<div class="row">
 		<div class="col-5">
 			<div class="input-group">
 				<div class="input-group-prepend">
-					<span class="input-group-text" id="inputTasaInmovilizacion">Tasa de inmovilizacion</span>
+					<span class="input-group-text" id="costoMaximoTotal">Costo maximo total</span>
 				</div>
-				<input type="numeric" class="form-control" aria-label="Sizing example input" aria-describedby="inputTasaInmovilizacion" [(ngModel)]="datos.tasaInmovilizacionCapital" name="tasaInmovilizacionCapital">
+				<input type="numeric" class="form-control" aria-label="Sizing example input" aria-describedby="costoMaximoTotal" [(ngModel)]="datos.costoMaximoTotal" name="costoMaximoTotal">
 			</div>
 		</div>
-	</div> -->
+	</div>
 	<!-- <br> -->
 	<div class="table-responsive">
 		<table class="table table-striped table-sm">
@@ -24,7 +24,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let producto of datos">
+				<tr *ngFor="let producto of datos.data">
 					<td><input type="text" class="form-control" [(ngModel)]="producto.descripcion" name="descripcion"></td>
 					<td><input type="text" class="form-control" [(ngModel)]="producto.costo" name="costo"></td>
 					<td><input type="text" class="form-control" [(ngModel)]="producto.costoAlmacenamiento" name="costoAlmacenamiento"></td>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { HttpService } from '../http.service'
-import { Producto, CalcularCantidadResponse } from '../model/model'
+import { Producto, CalcularCantidadResponse, ProductoRequest } from '../model/model'
 
 @Component({
   selector: 'app-listado-entrada',
@@ -10,18 +10,18 @@ import { Producto, CalcularCantidadResponse } from '../model/model'
 })
 export class ListadoEntradaComponent implements OnInit {
 
-	datos:Array<Producto> = []
+	datos:ProductoRequest;
   response: CalcularCantidadResponse;
 
   constructor(private _hs: HttpService) {
-    this.datos = this._hs.request.data;
+    this.datos = this._hs.request;
     console.log(this.datos)
   }
 
   ngOnInit() {
     this._hs.agregarProducto.subscribe((nuevoProducto:Producto) => {
-      this.datos.push(nuevoProducto);
-      this._hs.request.data = this.datos;
+      this.datos.data.push(nuevoProducto);
+      this._hs.request = this.datos;
     });
   }
 

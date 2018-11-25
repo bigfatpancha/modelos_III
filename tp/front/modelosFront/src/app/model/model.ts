@@ -38,4 +38,5 @@ export class Producto {
 
 export class ProductoRequest {
 	data: Array<Producto>;
+	costoMaximoTotal: number;
 }

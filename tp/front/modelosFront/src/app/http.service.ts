@@ -41,6 +41,7 @@ export class HttpService {
 		data.push(p5);
 		data.push(p6);
 		this.request.data = data;
+		this.request.costoMaximoTotal = 1000000.00;
 	}
 
 	consultarCantidades(): Observable<CalcularCantidadResponse>{
