@@ -19,7 +19,7 @@ export class ListadoSalidaComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		
+		this.response = new CalcularCantidadResponse();
 	}
 
 }

@@ -14,6 +14,7 @@ export class ListadoEntradaComponent implements OnInit {
   response: CalcularCantidadResponse;
 
   constructor(private _hs: HttpService) {
+    this.datos = new ProductoRequest();
     this.datos = this._hs.request;
     console.log(this.datos)
   }
