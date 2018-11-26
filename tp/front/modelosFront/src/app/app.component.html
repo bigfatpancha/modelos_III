@@ -1,5 +1,12 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <app-header></app-header>
-<app-listado-entrada></app-listado-entrada>
-<br><br>
-<router-outlet></router-outlet>
+
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+	<app-listado-entrada></app-listado-entrada>
+	<br><br>
+	<router-outlet></router-outlet>
+</kendo-pdf-export>
+<br>
+<div class="container">
+	<button type="button" class="btn btn-outline-dark" kendo-button (click)="pdf.saveAs('stock-optimizado.pdf')">Guardar en PDF</button>
+</div>

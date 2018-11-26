@@ -9,6 +9,10 @@ import { ListadoEntradaComponent } from './listado-entrada/listado-entrada.compo
 import { HeaderComponent } from './header/header.component';
 import { NuevoComponent } from './nuevo/nuevo.component';
 import { ListadoSalidaComponent } from './listado-salida/listado-salida.component';
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
 
 @NgModule({
   declarations: [
@@ -22,7 +26,9 @@ import { ListadoSalidaComponent } from './listado-salida/listado-salida.componen
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    PDFExportModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
